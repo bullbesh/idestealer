@@ -1,11 +1,11 @@
 import logging
 import os
 
+import sqlite3
+
 import aiogram
 from aiogram import Bot, Dispatcher, executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-
-import sqlite3
 
 
 logging.basicConfig(level=logging.INFO)
@@ -47,6 +47,9 @@ async def add_id(message):
         cursor.execute("INSERT INTO login_id VALUES(?);", user_id)
         connect.commit()
 
+        cursor.close()
+        connect.close()
+
         await message.answer("Ваше id успешно добавлено!")
     else:
         await message.answer("Такое id уже существует!")
@@ -60,6 +63,9 @@ async def delete_id(message):
     people_id = message.chat.id
     cursor.execute(f"DELETE FROM login_id WHERE id = {people_id}")
     connect.commit()
+
+    cursor.close()
+    connect.close()
 
     await message.answer("Ваше id успешно удалено!")
 
