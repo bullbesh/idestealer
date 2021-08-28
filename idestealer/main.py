@@ -47,12 +47,12 @@ async def add_id(message):
         cursor.execute("INSERT INTO login_id VALUES(?);", user_id)
         connect.commit()
 
-        cursor.close()
-        connect.close()
-
         await message.answer("Ваше id успешно добавлено!")
     else:
         await message.answer("Такое id уже существует!")
+
+    cursor.close()
+    connect.close()
 
 
 @dp.message_handler(commands=["delete"])
@@ -64,11 +64,10 @@ async def delete_id(message):
     cursor.execute(f"DELETE FROM login_id WHERE id = {people_id}")
     connect.commit()
 
-    cursor.close()
-    connect.close()
-
     await message.answer("Ваше id успешно удалено!")
 
+    cursor.close()
+    connect.close()
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
