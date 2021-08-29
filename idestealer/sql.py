@@ -15,7 +15,7 @@ def add_id(people_id, user_id):
 
     cursor.execute(f"SELECT id FROM login_id WHERE id = {people_id}")
     data = cursor.fetchone()
-    
+
     if data is None:
         cursor.execute("INSERT INTO login_id VALUES(?);", user_id)
         connect.commit()
