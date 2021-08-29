@@ -1,7 +1,10 @@
+"""SQL service file."""
+
 import sqlite3
 
 
 def add_id(people_id, user_id):
+    """Create Database with users ID."""
     connect = sqlite3.connect("users.db")
     cursor = connect.cursor()
 
@@ -27,6 +30,7 @@ def add_id(people_id, user_id):
 
 
 def delete_id(people_id):
+    """Delete users ID from Database."""
     connect = sqlite3.connect("users.db")
     cursor = connect.cursor()
 
