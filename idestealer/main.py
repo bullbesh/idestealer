@@ -7,6 +7,8 @@ import aiogram
 from aiogram import Bot, Dispatcher, executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
+import sql
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -26,48 +28,22 @@ async def send_welcome(message):
 
 
 @dp.message_handler(commands=["add"])
-async def add_id(message):
-    connect = sqlite3.connect("users.db")
-    cursor = connect.cursor()
-
-    cursor.execute(
-        """CREATE TABLE IF NOT EXISTS login_id(
-		id INTEGER
-	)"""
-    )
-
-    connect.commit()
-
+async def send_add_id(message):
     people_id = message.chat.id
-    cursor.execute(f"SELECT id FROM login_id WHERE id = {people_id}")
-    data = cursor.fetchone()
+    user_id = [people_id]
 
-    if data is None:
-        user_id = [message.chat.id]
-        cursor.execute("INSERT INTO login_id VALUES(?);", user_id)
-        connect.commit()
+    sql.add_id(people_id, user_id)
 
-        await message.answer("Ваше id успешно добавлено!")
-    else:
-        await message.answer("Такое id уже существует!")
-
-    cursor.close()
-    connect.close()
+    await message.answer("Ваше id успешно добавлено!")
 
 
 @dp.message_handler(commands=["delete"])
-async def delete_id(message):
-    connect = sqlite3.connect("users.db")
-    cursor = connect.cursor()
-
+async def send_delete_id(message):
     people_id = message.chat.id
-    cursor.execute(f"DELETE FROM login_id WHERE id = {people_id}")
-    connect.commit()
+
+    sql.delete_id(people_id)
 
     await message.answer("Ваше id успешно удалено!")
-
-    cursor.close()
-    connect.close()
 
 
 if __name__ == "__main__":
