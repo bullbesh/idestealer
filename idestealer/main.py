@@ -1,3 +1,7 @@
+"""The main module of the project, combining all the functionality of the bot
+and displaying information to the user.
+"""
+
 import logging
 import os
 
@@ -29,20 +33,18 @@ async def send_welcome(message):
 
 @dp.message_handler(commands=["add"])
 async def send_add_id(message):
+    """Send "Add ID" notification."""
     people_id = message.chat.id
     user_id = [people_id]
-
     sql.add_id(people_id, user_id)
-
     await message.answer("Ваше id успешно добавлено!")
 
 
 @dp.message_handler(commands=["delete"])
 async def send_delete_id(message):
+    """Send "Delete ID" notification."""
     people_id = message.chat.id
-
     sql.delete_id(people_id)
-
     await message.answer("Ваше id успешно удалено!")
 
 
